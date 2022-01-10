@@ -1,0 +1,86 @@
+﻿<Window x:Class="Tsk12WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tsk12WpfApp1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="200" Width="500">
+    <!--Стандартный компонент CheckBox имеет следующий вид: 
+    Переопределите шаблон компонента, чтобы он принял следующий вид:
+    Для этого определите шаблон в виде контейнера компоновки из двух строк.
+    В нижней строке  разместите ContentPresenter – там будет отображаться надпись.
+    В верхней строке разместите прямоугольник со скругленными углами, фигуру Path в виде Х и окружность. 
+    Для фигуры Path в виде Х и окружности установите значение свойства Opacity="0".
+    Далее определите триггеры:
+    Когда значение свойства IsChecked принимает значение "true" свойство Opacity у фигуры Path установите в "1".
+    Когда значение свойства IsChecked принимает значение " {x:Null}" свойство Opacity у окружности установите в "1".-->
+
+    <Window.Resources>
+        <!--Задаем стиль для чекбоскса на основе компонентов стандартного стиля с необходимыми корректировками-->
+        <Style x:Key="CheckBoxStyle1" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="checkBoxBorder"                                    
+                                    Grid.Row="0"
+                                    BorderBrush="DarkGray" 
+                                    BorderThickness="1"
+                                    CornerRadius="2"                                    
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" 
+                                    Margin="1">
+                                <Grid>
+                                    <Rectangle  
+                                           Fill="Black" 
+                                           Margin="2" 
+                                           Opacity="0" 
+                                           Width="5"
+                                           Height="5"
+                                           RadiusX="2" RadiusY="2"/>
+                                    <Path x:Name="optionMark1" Stroke="DarkGray" StrokeThickness="1" Margin="1" Opacity="0" Stretch="None">
+                                        <Path.Data>
+                                            <GeometryGroup>
+                                                <LineGeometry StartPoint="0,0" EndPoint="7,7" />
+                                                <LineGeometry StartPoint="0,7" EndPoint="7,0" />
+                                            </GeometryGroup>                                          
+                                        </Path.Data>                                        
+                                    </Path>
+                                    <Ellipse x:Name="indeterminateMark1" Width="5" Height="5" Fill="DarkGray" Opacity="0"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Grid.Row="1" 
+                                              Focusable="False" 
+                                              HorizontalAlignment="Center" 
+                                              Margin="1" RecognizesAccessKey="True"                                               
+                                              VerticalAlignment="Center"
+                                              />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark1" Value="1"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark1" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark1" Value="0"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark1" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <UniformGrid Columns="3">
+        <CheckBox x:Name="checkBox1" IsThreeState="True" IsChecked="False" Content="Checked" FontSize="10" Style="{DynamicResource CheckBoxStyle1}" Margin="0,74,0,50"/>
+        <CheckBox x:Name="checkBox2" IsThreeState="True" IsChecked="True" Content="UnChecked" FontSize="10" Style="{DynamicResource CheckBoxStyle1}" Margin="0,74,0,50"/>
+        <CheckBox x:Name="checkBox3" IsThreeState="True" IsChecked="{x:Null}" Content="Indetermitate" FontSize="10" Style="{DynamicResource CheckBoxStyle1}" Margin="0,74,0,50"/>
+    </UniformGrid>
+</Window>
